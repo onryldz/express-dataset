@@ -88,8 +88,8 @@
         <DCCReference Include="Source\API\API.Login.pas"/>
         <DCCReference Include="Source\API\API.Customer.pas"/>
         <DCCReference Include="Source\API.Utils.pas"/>
-        <DCCReference Include="Source\API\API.Login.Inject.pas"/>
-        <DCCReference Include="Source\API\Model.Customer.pas"/>
+        <DCCReference Include="Source\API\Model\Model.Customer.pas"/>
+        <DCCReference Include="Source\API\Inject\API.LInject.Login.pas"/>
         <DCCReference Include="Source\API\API.CustomerDetail.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

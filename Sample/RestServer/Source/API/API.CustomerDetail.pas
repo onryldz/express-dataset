@@ -1,4 +1,4 @@
-unit API.CustomerDetail;
+﻿unit API.CustomerDetail;
 
 interface
 
@@ -12,6 +12,7 @@ uses
   Model.Customer;
 
 type
+
   [Location('api/v1/customerdetails')]
   TCustomerDetails = class(TProvider)
   public
@@ -77,5 +78,6 @@ end;
 
 initialization
   TClassManager.Register(TCustomerDetails);
+
 
 end.

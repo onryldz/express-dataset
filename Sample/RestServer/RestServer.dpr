@@ -13,8 +13,8 @@ uses
   API.Login in 'Source\API\API.Login.pas',
   API.Customer in 'Source\API\API.Customer.pas',
   API.Utils in 'Source\API.Utils.pas',
-  API.Login.Inject in 'Source\API\API.Login.Inject.pas',
-  Model.Customer in 'Source\API\Model.Customer.pas',
+  Model.Customer in 'Source\API\Model\Model.Customer.pas',
+  API.LInject.Login in 'Source\API\Inject\API.LInject.Login.pas',
   API.CustomerDetail in 'Source\API\API.CustomerDetail.pas';
 
 {$R *.res}
