@@ -171,9 +171,9 @@ type
     function CompareBookmarks(Bookmark1, Bookmark2: TBookmark):Integer; override;
     function GetFieldData(Field: TField; {$IFDEF DXE4} var {$ENDIF} Buffer: {$IFDEF DXE3} TValueBuffer {$ELSE} Pointer {$ENDIF}): Boolean; override;
     function Locate(const KeyFields: string; const KeyValues: Variant; Options: TLocateOptions): Boolean; override;
+    property Data: ISuperArray read FDataArr;
   published
     property Active;
-    property Data: ISuperArray read FDataArr;
     property BeforeOpen;
     property AfterOpen;
     property BeforeClose;
@@ -1200,14 +1200,14 @@ end;
 
 procedure TCRUDDataSet.InternalRefresh;
 begin
-  InternalOpen;
+  Close;
+  Open;
 end;
 
 procedure TCRUDDataSet.MasterChanged(Sender: TObject);
 begin
   if FMasterLink.Fields.Count <= 0 then begin
-
-     Exit;
+     Exit;
   end;
   Refresh;
   First;
@@ -1248,24 +1248,30 @@ end;
 procedure TCRUDDataSet.UpdateMasterFields;
 var
   Path: PURIPath;
-  Fields: String;
+  Fields: TList<String>;
   procedure Resolve(Paths: TArray<TURIPath>);
   var
     I: Integer;
   begin
     for I := 0 to High(Paths) do begin
         Path := @Paths[I];
-        if Path.IsParam then
-           Fields := ';' + Fields + Path.Name
+        if Path.IsParam and not Fields.Contains(Path.Name) then
+           Fields.Add(Path.Name);
     end;
   end;
 begin
-  Fields := '';
-  Resolve(FAPIInfo.FGet.FURIPaths);
-  Resolve(FAPIInfo.FPost.FURIPaths);
-  Resolve(FAPIInfo.FPut.FURIPaths);
-  Resolve(FAPIInfo.FDelete.FURIPaths);
-  FMasterLink.FieldNames := Fields.Substring(1);
+  Fields := TList<String>.Create;
+  try
+    Resolve(FAPIInfo.FGet.FURIPaths);
+    Resolve(FAPIInfo.FPost.FURIPaths);
+    Resolve(FAPIInfo.FPut.FURIPaths);
+    Resolve(FAPIInfo.FDelete.FURIPaths);
+    if Fields.Count = 0 then
+       FMasterLink.FieldNames := ''
+    else FMasterLink.FieldNames := String.Join(';', Fields.ToArray);
+  finally
+    Fields.Free;
+  end;
 end;
 
 { TCRUDDataSetAPI }
